@@ -1,4 +1,6 @@
 import 'dart:core';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 
 class ExpertDetailsPage extends StatefulWidget {
@@ -9,7 +11,6 @@ class ExpertDetailsPage extends StatefulWidget {
 
 class _ExpertDetailsPageState extends State<ExpertDetailsPage> {
 
-  var pictureController = TextEditingController();
   var fromHoursController = TextEditingController();
   var fromMinutesController = TextEditingController();
   var fromSecondsController = TextEditingController();
@@ -33,6 +34,85 @@ class _ExpertDetailsPageState extends State<ExpertDetailsPage> {
   bool? checked3 = false;
   bool? checked4 = false;
   bool? checked5 = false;
+
+  XFile? image;
+
+  final ImagePicker picker = ImagePicker();
+
+  Future getImage (ImageSource media) async {
+    var img = await picker.pickImage(source: media);
+
+    setState(() {
+      image = img;
+    });
+  }
+
+  void myAlert () {
+    showDialog(
+        context: context,
+        builder: (BuildContext context){
+          return AlertDialog(
+            shape:
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            title: Text(
+              'please choose media to select',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 15.0,
+                color: Colors.blue[800],
+              ),
+            ),
+            content: Container(
+              height: MediaQuery.of(context).size.height/6,
+              child: Column(
+                children: [
+                  ElevatedButton(
+                      onPressed: (){
+                        Navigator.pop(context);
+                        getImage(ImageSource.gallery);
+                      },
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.image,
+                          ),
+                          SizedBox(
+                            width: 20.0,
+                          ),
+                          Text(
+                            'From Gallery',
+                          ),
+                        ],
+                      ),
+                  ),
+                  ElevatedButton(
+                      onPressed: (){
+                        Navigator.pop(context);
+                        getImage(ImageSource.camera);
+                      },
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.camera,
+                          ),
+                          SizedBox(
+                            width: 20.0,
+                          ),
+                          Text(
+                            'From Camera',
+                          ),
+                        ],
+                      ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,66 +145,6 @@ class _ExpertDetailsPageState extends State<ExpertDetailsPage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        bottom: 10.0,
-                      ),
-                      child: Text(
-                        'Picture',
-                        style: TextStyle(
-                          color: Colors.blue[800],
-                          fontWeight: FontWeight.w600,
-                          fontSize: 30.0,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: double.infinity,
-                      child: TextFormField(
-                        controller: pictureController,
-                        keyboardType: TextInputType.text,
-                        onFieldSubmitted: (var path)
-                        {
-                          print(path);
-                        },
-                        onChanged: (var path)
-                        {
-                          print(path);
-                        },
-                        validator: (path)
-                        {
-                          if(path!.isEmpty)
-                          {
-                            return 'picture must not be empty';
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          labelText: 'picture path',
-                          labelStyle: TextStyle(
-                            color: Colors.blue[800],
-                          ),
-                          prefixIcon: Icon(
-                            Icons.picture_in_picture_alt_sharp,
-                            color: Colors.blue[800],
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 5.0,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 10.0,
-                    ),
                     Text(
                       'Days:',
                       style: TextStyle(
@@ -810,8 +830,56 @@ class _ExpertDetailsPageState extends State<ExpertDetailsPage> {
                     ),
                   ],
                 ),
+                Divider(
+                  color: Colors.black45,
+                  height: 20.0,
+                ),
                 SizedBox(
-                  height: 15.0,
+                  height: 2.0,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: (){
+                        myAlert();
+                      },
+                      child: Text(
+                        'Upload Photo',
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    image != null
+                        ? Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0,
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.file(
+                          File(
+                            image!.path,
+                          ),
+                          fit: BoxFit.cover,
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height,
+                        ),
+                      ),
+                    )
+                        : Text(
+                      'No Image',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.blue[800],
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10.0,
                 ),
                 Container(
                   width: double.infinity,
@@ -824,7 +892,6 @@ class _ExpertDetailsPageState extends State<ExpertDetailsPage> {
                     {
                       if(formKey.currentState!.validate())
                       {
-                        print(pictureController.text);
                         print(fromHoursController.text);
                         print(fromMinutesController.text);
                         print(fromSecondsController.text);
