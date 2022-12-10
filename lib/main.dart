@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:programming_languages/application/experHome_page.dart';
+import 'package:programming_languages/application/expertDetails_page.dart';
 import 'package:programming_languages/application/welcome_page.dart';
 import 'package:programming_languages/calculator/bloc_observer.dart';
 import 'package:programming_languages/calculator/counter_screen.dart';
@@ -20,7 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: WelcomePage(),
+      home: ExpertDetailsPage(),
     );
   }
 }

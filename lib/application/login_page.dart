@@ -70,6 +70,9 @@ class _LoginPageState extends State<LoginPage> {
                       color: Colors.blue[800],
                     ),
                   ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
                   TextFormField(
                     controller: emailController,
                     keyboardType: TextInputType.emailAddress,
@@ -98,7 +101,9 @@ class _LoginPageState extends State<LoginPage> {
                         Icons.email,
                         color: Colors.blue[800],
                       ),
-                      border: OutlineInputBorder(),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -111,6 +116,9 @@ class _LoginPageState extends State<LoginPage> {
                       fontWeight: FontWeight.bold,
                       color: Colors.blue[800],
                     ),
+                  ),
+                  SizedBox(
+                    height: 10.0,
                   ),
                   TextFormField(
                     controller: passwordController,
@@ -150,7 +158,9 @@ class _LoginPageState extends State<LoginPage> {
                           });
                         },
                       ),
-                      border: OutlineInputBorder(),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
                   ),
                   SizedBox(
